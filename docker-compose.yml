@@ -1,0 +1,31 @@
+example:
+  build: example/.
+  ports:
+    - 9191:80
+  volumes: 
+    - ./example/:/var/www/html/
+
+bolt:
+  build: .
+  ports:
+    - 9292:80
+  volumes:
+    - .:/var/www/html/
+  links:
+    - rethinkdb:rethinkdb
+    - statsdgraphite:statsdgraphite
+
+rethinkdb:
+  image: rethinkdb
+  ports:
+    - 8080:8080
+    - 28015:28015
+    - 29015:29015
+
+statsdgraphite:
+  image: hopsoft/graphite-statsd
+  ports:
+    - 81:80
+    - 2003:2003
+    - 8125:8125
+    - 8126:8126
